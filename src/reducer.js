@@ -8,7 +8,10 @@ const reducer = (state, action) => {
 				cart: state.cart.filter((item) => item.id !== action.payload),
 			};
 		case 'INCREASE':
-			return { ...state, cart: changeAmount(state.cart, action.payload, 1) };
+			return {
+				...state,
+				cart: changeAmount(state.cart, action.payload, 1),
+			};
 		case 'DECREASE':
 			return {
 				...state,
@@ -20,11 +23,20 @@ const reducer = (state, action) => {
 				0
 			);
 			total = parseFloat(total.toFixed(2));
-			return { ...state, total };
+			return {
+				...state,
+				total,
+				amount: state.cart.reduce((total, item) => item.amount + total, 0),
+			};
 		case 'LOADING':
 			return { ...state, loading: true };
 		case 'DISPLAY_ITEMS':
-			return { ...state, loading: false, cart: action.payload };
+			return {
+				...state,
+				loading: false,
+				cart: action.payload,
+				amount: state.cart.reduce((total, item) => item.amount + total, 0),
+			};
 		default:
 			throw new Error('no matching action');
 	}
